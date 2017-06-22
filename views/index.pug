@@ -1,0 +1,65 @@
+extends layout
+
+block content
+  h1= title
+
+  if pics.length > 0
+    h3 On this page:
+    ol
+      for pic in pics
+        li
+          a(href='#' + pic.alt)= pic.value
+
+  if user
+    button(type='button')#add_pic.btn.btn-info Add Pic
+    form(action='/upload', method='post', enctype='multipart/form-data', style='display:none')#upload.navbar-form.navbar-left
+      .form-group
+        input(type='file', name='file')
+      .form-group
+        input(type='text', placeholder='Name', name='name')
+      input(type='text', value=path, name='path', style='display:none')
+      button(type='submit').btn.btn-success Upload
+    br
+
+  br
+  br
+
+  if dirs.length > 0
+    h3 Locations:
+    ol
+      for dir in dirs
+        li
+          a(href=dir.href)= dir.value
+
+  if user
+    button(type='button')#add_location.btn.btn-info Add Location
+    form(action='/mkdir', method='post', style='display:none')#mkdir.navbar-form.navbar-left
+      .form-group
+        input(type='text', placeholder='Name', name='name')
+      input(type='text', value=path, name='path', style='display:none')
+      button(type='submit').btn.btn-success Create
+
+    br
+
+  br
+  br
+
+  for pic in pics
+    p= pic.value
+    img(src=pic.src, alt=pic.alt, id=pic.alt)
+    br
+    br
+
+  br
+  br
+
+  if user
+    p You are currently logged in!
+    a(href='/logout') Logout
+  else
+    a(href='/login')
+      button(type='button').btn.btn-success Login
+
+block scripts
+  if user
+    script(src='/javascripts/index.js')

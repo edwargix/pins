@@ -1,0 +1,1 @@
+DEBUG=ping:* npm test

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  if(user)
+    p You are already logged in!
+  else
+    h1 Login
+    form(action='/login', method='post').navbar-form.navbar-left
+      .input-group
+        span.input-group-addon Username: 
+        input(type='text', name='username').form-control
+      br
+      .input-group
+        span.input-group-addon Password: 
+        input(type='password', name='password').form-control
+      br
+      .input-group-btn
+        input(type='submit', value='Submit').btn.form-control.btn-success
+      input(type='text', name='redirect', style='display:none')#redirect
+
+block scripts
+  script(src='/javascripts/login.js')
