@@ -7,16 +7,16 @@ const qs = require('querystring');
 
 router.get('/*', function(req, res, next) {
 
-  let dir = path.join('./pins', qs.unescape(req.path));
+  var dir = path.join('./pins', qs.unescape(req.path));
   console.log('path: ' + req.path);
 
-  let files = fs.readdirSync(dir);
+  var files = fs.readdirSync(dir);
 
-  let dirs = new Array();
-  let pics = new Array();
-  let stat;
-  for (let i = 0; i < files.length; i++) {
-    let file = files[i];
+  var dirs = new Array();
+  var pics = new Array();
+  var stat;
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
     stat = fs.statSync(path.join('./pins', qs.unescape(req.path), file));
     if (stat.isDirectory()) {
       dirs.push({
@@ -24,7 +24,7 @@ router.get('/*', function(req, res, next) {
         'href': req.path + file
       });
     } else {
-      let file_parts = file.split('.');
+      var file_parts = file.split('.');
       pics.push({
         'src': file,
         'alt': file,

@@ -100,13 +100,13 @@ app.post('/upload', upload.single('file'), function(req, res) {
     return;
   }
 
-  let location = '';
-  for (let sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
+  var location = '';
+  for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
   location = location.substring(0, location.length - 1);
 
-  let file_parts = req.file.originalname.split('.');
+  var file_parts = req.file.originalname.split('.');
 
-  let file = path.join('./pins', location, req.body.name + '.' + file_parts[file_parts.length - 1]);
+  var file = path.join('./pins', location, req.body.name + '.' + file_parts[file_parts.length - 1]);
 
   fs.writeFile(file, req.file.buffer, function(err) {
     if (err) res.end(err);
@@ -129,11 +129,11 @@ app.post('/mkdir', function(req, res) {
     return;
   }
 
-  let location = '';
-  for (let sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
+  var location = '';
+  for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
   location = location.substring(0, location.length - 1);
 
-  let dir = path.join('./pins', location, req.body.name);
+  var dir = path.join('./pins', location, req.body.name);
 
   fs.mkdir(dir, function(err) {
     if (err) res.end(err);
