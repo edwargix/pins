@@ -32,5 +32,5 @@ npm-debug.log
 # Pins directory, where the content is stored
 pins/
 
-# Auth directory, where admin password is stored
-auth/
+# Config directory, where passwords and other local information is stored
+config/

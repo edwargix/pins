@@ -10,7 +10,7 @@ const multer = require('multer');
 const upload = multer();
 
 
-const admin = require('./auth/admin');
+const admin = require('./config/admin');
 
 
 var passport = require('passport');
