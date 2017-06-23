@@ -35,7 +35,7 @@ router.get('/*', function(req, res, next) {
 
 
   res.render('index', {
-    title: req.path == "/" ? "World" : path.basename(dir),
+    title: req.path == "/" ? require('../config/main_page').title : path.basename(dir),
     user: req.user,
     dirs: dirs,
     pics: pics,
