@@ -90,7 +90,14 @@ app.post('/upload', upload.single('file'), function(req, res) {
     return;
   }
 
-  if (!supported_images.includes(req.file.mimetype)) {
+  var found = false;
+  for(var i = 0; i < supported_images.length; i++) {
+    if (supported_images[i] == req.file.mimetype) {
+      found = true;
+      break;
+    }
+  }
+  if(!found) {
     res.end('That filetype is not supported');
     return;
   }
