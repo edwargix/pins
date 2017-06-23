@@ -140,7 +140,7 @@ app.post('/mkdir', function(req, res) {
   for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
   location = location.substring(0, location.length - 1);
 
-  var dir = path.join('./pins', location, req.body.name);
+  var dir = path.join('./pins', location, qs.unescape(req.body.name));
 
   fs.mkdir(dir, function(err) {
     if (err) res.end(err);
