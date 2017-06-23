@@ -11,6 +11,8 @@ router.get('/*', function(req, res, next) {
   console.log('path: ' + req.path);
 
   var files = fs.readdirSync(dir);
+  for (var i = 0; i < files.length; i++)
+    if (files[i] == '.git') { files.splice(i, 1); break; };
 
   var dirs = new Array();
   var pics = new Array();
