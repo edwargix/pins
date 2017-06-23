@@ -2,6 +2,11 @@ extends layout
 
 block content
   if path != '/'
+    a(href='/')
+      button.btn.btn-default
+        span.glyphicon.glyphicon-home
+        |  Home
+
     - var end = path.search(new RegExp('/[^/]+/?$'))
     - var parent = path.substring(0, end + 1)
     a(href=parent)
