@@ -1,6 +1,14 @@
 extends layout
 
 block content
+  if path != '/'
+    - var end = path.search(new RegExp('/[^/]+/?$'))
+    - var parent = path.substring(0, end + 1)
+    a(href=parent)
+      button.btn.btn-default
+        small &#8598;
+        |  Up
+
   h1= title
 
   if pics.length > 0
