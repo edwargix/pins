@@ -58,7 +58,7 @@ block content
   br
 
   for pic in pics
-    p= pic.value
+    p(id=pic.alt + '_title')= pic.value
     img(src=pic.src, alt=pic.alt, id=pic.alt).img-responsive
     br
     br
