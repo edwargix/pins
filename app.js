@@ -73,7 +73,6 @@ app.post('/login',
          passport.authenticate('local', { failureRedirect: '/login' }),
 
          function(req, res) {
-           console.log('body: ' + JSON.stringify(req.body));
            res.redirect(req.body.redirect);
          });
 
