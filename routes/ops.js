@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const upload = require('multer')();
 const qs = require('querystring');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 
@@ -72,6 +72,25 @@ router.post('/mkdir', function(req, res) {
     else {
       res.redirect(req.body.path);
     }
+  });
+});
+
+
+router.post('/rm', function(req, res) {
+  if (!req.user) {
+    res.end('You are not authorized to delete');
+    return;
+  }
+
+  var location = '';
+  for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
+  location = location.substring(0, location.length - 1);
+
+  var file = path.join('./pins', location, req.body.name);
+
+  fs.remove(file, function(err) {
+    if (err) res.end(err);
+    else res.redirect(req.body.path);
   });
 });
 
