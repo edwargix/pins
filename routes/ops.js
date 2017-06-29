@@ -6,6 +6,14 @@ const fs = require('fs-extra');
 const path = require('path');
 
 
+function loggedIn(purpose) {
+  return function(req, res, next) {
+    if (req.user) next();
+    else res.end(purpose ? 'You are not authorized to ' + purpose : 'You are not authorized');
+  };
+}
+
+
 function validFilename(param, remove_suffix) {
   return function(req, res, next) {
     var params = param.split('.');
@@ -23,12 +31,7 @@ function validFilename(param, remove_suffix) {
 const supported_images = ['image/jpeg', 'image/gif', 'image/png', 'image/svg+xml', 'image/tiff'];
 
 
-router.post('/upload', validFilename('body.name', false), upload.single('file'), function(req, res) {
-  if (!req.user) {
-    res.end('You are not authorized to upload');
-    return;
-  }
-
+router.post('/upload', loggedIn('upload'), validFilename('body.name', false), upload.single('file'), function(req, res) {
   var found = false;
   for(var i = 0; i < supported_images.length; i++) {
     if (supported_images[i] == req.file.mimetype) {
@@ -64,12 +67,7 @@ router.post('/upload', validFilename('body.name', false), upload.single('file'),
 });
 
 
-router.post('/mkdir', validFilename('body.name', false), function(req, res) {
-  if (!req.user) {
-    res.end('You are not authorized to upload');
-    return;
-  }
-
+router.post('/mkdir', loggedIn('make a directory'), validFilename('body.name', false), function(req, res) {
   var location = '';
   for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
   location = location.substring(0, location.length - 1);
@@ -85,12 +83,7 @@ router.post('/mkdir', validFilename('body.name', false), function(req, res) {
 });
 
 
-router.post('/rm', function(req, res) {
-  if (!req.user) {
-    res.end('You are not authorized to delete');
-    return;
-  }
-
+router.post('/rm', loggedIn('delete'), function(req, res) {
   var location = '';
   for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
   location = location.substring(0, location.length - 1);
@@ -104,12 +97,7 @@ router.post('/rm', function(req, res) {
 });
 
 
-router.post('/mv', validFilename('body.new_name', false), function(req, res) {
-  if (!req.user) {
-    res.end('You are not authorized to rename');
-    return;
-  }
-
+router.post('/mv', loggedIn('rename'), validFilename('body.new_name', false), function(req, res) {
   var location = '';
   for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
   location = location.substring(0, location.length - 1);
