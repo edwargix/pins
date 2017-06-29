@@ -2,7 +2,7 @@ var express = require('express');
 const path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const qs = require('querystring');
 
@@ -10,7 +10,18 @@ const multer = require('multer');
 const upload = multer();
 
 
+// Ensure pins/ dir exists
+fs.ensureDirSync('./pins');
+
+
+// Ensure config files exist
+fs.ensureFileSync('./config/main_page.js');
+fs.ensureFileSync('./config/admin.js');
+
+
 const admin = require('./config/admin');
+if (!admin.username) admin.username = 'admin';
+if (!admin.password) admin.password = 'zooko';
 
 
 var passport = require('passport');
