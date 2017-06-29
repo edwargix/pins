@@ -59,6 +59,25 @@ block content
 
   for pic in pics
     p(id=pic.alt + '_title')= pic.value
+
+    if user
+      .well(id=pic.alt + '_actions', style='display:none')
+        .btn-group(role='group')
+          button(type='button', id=pic.alt + '_cancel').btn.btn-default &#10799; Cancel
+          button(type='button', id=pic.alt + '_rename').btn.btn-default Rename
+          button(type='button', id=pic.alt + '_delete').btn.btn-danger Delete
+
+        form(action='/mv', method='post', id=pic.alt + '_rename_form', style='display:none')
+          br
+          .form-group
+            .input-group
+              input(name='new_name', type='text', placeholder='Name').form-control
+              span.input-group-btn
+                button(type='submit', id=pic.alt + '_rename_submit').btn.btn-success Submit
+          input(name='path', value=path, style='display:none')
+          input(name='name', value=pic.alt, style='display:none')
+      br
+
     img(src=pic.src, alt=pic.alt, id=pic.alt).img-responsive
     br
     br
@@ -68,6 +87,7 @@ block content
 
   if user
     p You are currently logged in!
+    div#path(style='display:none') #{path}
     a(href='/logout') Logout
   else
     a(href='/login')
