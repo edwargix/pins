@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 var express = require('express');
 var router = express.Router();
@@ -35,7 +35,7 @@ router.get('/*', function(req, res, next) {
 
 
   res.render('index', {
-    title: req.path == "/" ? require('../config/main_page').title : path.basename(dir),
+    title: req.path == "/" ? require('../config/main_page').title || "World" : path.basename(dir),
     user: req.user,
     dirs: dirs,
     pics: pics,
