@@ -13,6 +13,20 @@ function loggedIn(purpose) {
   };
 }
 
+const supported_images = ['image/jpeg', 'image/gif', 'image/png', 'image/svg+xml', 'image/tiff'];
+function validImagetype(param) {
+  return function(req, res, next) {
+    for(var i = 0; i < supported_images.length; i++) {
+      if (supported_images[i] == req.file.mimetype) {
+        next();
+        return;
+      }
+    }
+
+    res.end('That filetype is not supported');
+  };
+}
+
 
 function validFilename(param, remove_suffix) {
   return function(req, res, next) {
@@ -28,21 +42,7 @@ function validFilename(param, remove_suffix) {
 }
 
 
-const supported_images = ['image/jpeg', 'image/gif', 'image/png', 'image/svg+xml', 'image/tiff'];
-
-
-router.post('/upload', loggedIn('upload'), validFilename('body.name', false), upload.single('file'), function(req, res) {
-  var found = false;
-  for(var i = 0; i < supported_images.length; i++) {
-    if (supported_images[i] == req.file.mimetype) {
-      found = true;
-      break;
-    }
-  }
-  if(!found) {
-    res.end('That filetype is not supported');
-    return;
-  }
+router.post('/upload', loggedIn('upload'), upload.single('file'), validImagetype('file.mimetype'), validFilename('body.name', false), function(req, res) {
 
   var location = '';
   for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
