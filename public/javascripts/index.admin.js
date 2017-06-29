@@ -24,10 +24,6 @@ $('img').on('click', function() {
         $('[id="' + img.id + '_actions"]').fadeOut('fast');
       });
 
-      $('[id="' + img.id + '_rename"]').off('click').on('click', function() {
-        $('[id="' + img.id + '_rename_form"]').toggle();
-      });
-
       $('[id="' + img.id + '_delete"]').off('click').on('click', function() {
         if (window.confirm('The pic will be deleted permanently'))
           $.post('/rm', { path: $('div#path').html(), name: img.alt }, () => { window.location.reload(); });

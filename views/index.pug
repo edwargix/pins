@@ -19,13 +19,6 @@ block content
       |    
       button(type='button').btn.btn-danger.btn-xs#delete_page Delete
 
-  if pics.length > 0
-    h3 On this page:
-    ol
-      for pic in pics
-        li
-          a(href='#' + pic.alt)= pic.value
-
   if user
     button(type='button')#add_pic.btn.btn-info Add Pic
     form(action='/upload', method='post', enctype='multipart/form-data', style='display:none')#upload.navbar-form.navbar-left
@@ -61,24 +54,14 @@ block content
   br
 
   for pic in pics
-    p(id=pic.alt + '_title')= pic.value
+    p(id=pic.alt + '_title', style='display:none')= pic.value
 
     if user
       .well(id=pic.alt + '_actions', style='display:none')
         .btn-group(role='group')
           button(type='button', id=pic.alt + '_cancel').btn.btn-default &#10799; Cancel
-          button(type='button', id=pic.alt + '_rename').btn.btn-default Rename
           button(type='button', id=pic.alt + '_delete').btn.btn-danger Delete
 
-        form(action='/mv', method='post', id=pic.alt + '_rename_form', style='display:none')
-          br
-          .form-group
-            .input-group
-              input(name='new_name', type='text', placeholder='Name').form-control
-              span.input-group-btn
-                button(type='submit', id=pic.alt + '_rename_submit').btn.btn-success Submit
-          input(name='path', value=path, style='display:none')
-          input(name='name', value=pic.alt, style='display:none')
       br
 
     img(src=pic.src, alt=pic.alt, id=pic.alt).img-responsive
