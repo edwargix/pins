@@ -104,4 +104,26 @@ router.post('/rm', function(req, res) {
 });
 
 
+router.post('/mv', validFilename('body.new_name', false), function(req, res) {
+  if (!req.user) {
+    res.end('You are not authorized to rename');
+    return;
+  }
+
+  var location = '';
+  for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
+  location = location.substring(0, location.length - 1);
+
+  var current_file = path.join('./pins', location, req.body.name);
+  var suffix = current_file.split('.').slice(-1)[0];
+
+  var new_file = path.join('./pins', location, req.body.new_name + '.' + suffix);
+
+  fs.move(current_file, new_file, function(err) {
+    if (err) res.end(err);
+    else res.redirect(req.body.path);
+  });
+});
+
+
 module.exports = router;
