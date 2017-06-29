@@ -90,9 +90,12 @@ router.post('/rm', loggedIn('delete'), function(req, res) {
 
   var file = path.join('./pins', location, req.body.name);
 
+  var is_dir = fs.lstatSync(file).isDirectory();
+
   fs.remove(file, function(err) {
     if (err) res.end(err);
-    else res.redirect(req.body.path);
+    else if (is_dir) res.redirect(path.normalize(path.join(location, '..')));
+    else res.redirect(location);
   });
 });
 
