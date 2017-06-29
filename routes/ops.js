@@ -45,9 +45,14 @@ router.post('/upload', validFilename('body.name', false), upload.single('file'),
   for (var sub of qs.unescape(req.body.path).split('/')) location += sub + '/';
   location = location.substring(0, location.length - 1);
 
-  var file_parts = req.file.originalname.split('.');
+  var split = req.file.originalname.split('.');
+  var append = '';
+  if (split.length > 1) {
+    append = split.slice(-1)[0].trim(); // gets last text via delimiter '.' and remove whitespace
+    if (append != '') append = '.' + append;
+  }
 
-  var file = path.join('./pins', location, req.body.name + '.' + file_parts[file_parts.length - 1]);
+  var file = path.join('./pins', location, req.body.name + append);
 
   fs.writeFile(file, req.file.buffer, function(err) {
     if (err) res.end(err);
