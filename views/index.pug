@@ -9,12 +9,15 @@ block content
 
     - var end = path.search(new RegExp('/[^/]+/?$'))
     - var parent = path.substring(0, end + 1)
-    a(href=parent)
+    a(href=parent)#parent
       button.btn.btn-default
         small &#8598;
         |  Up
 
-  h1= title
+  h1 #{title}
+    if user
+      |    
+      button(type='button').btn.btn-danger.btn-xs#delete_page Delete
 
   if pics.length > 0
     h3 On this page:

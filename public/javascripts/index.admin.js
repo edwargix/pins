@@ -36,3 +36,9 @@ $('img').on('click', function() {
     });
   });
 });
+
+
+$('#delete_page').on('click', function() {
+  if (window.confirm('This page and every page beneath it will be deleted'))
+    $.post('/rm', { path: $('div#path').html(), name: '' }, () => { window.location = $('#parent').attr('href'); });
+});
