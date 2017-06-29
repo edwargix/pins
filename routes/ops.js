@@ -61,7 +61,7 @@ router.post('/upload', loggedIn('upload'), upload.single('file'), validImagetype
     if (err) res.end(err);
     else {
       console.log('Wrote file ' + file);
-      res.redirect(req.body.path);
+      res.redirect(location);
     }
   });
 });
@@ -77,7 +77,7 @@ router.post('/mkdir', loggedIn('make a directory'), validFilename('body.name', f
   fs.mkdir(dir, function(err) {
     if (err) res.end(err);
     else {
-      res.redirect(req.body.path);
+      res.redirect(location);
     }
   });
 });
@@ -112,7 +112,7 @@ router.post('/mv', loggedIn('rename'), validFilename('body.new_name', false), fu
 
   fs.move(current_file, new_file, function(err) {
     if (err) res.end(err);
-    else res.redirect(req.body.path);
+    else res.redirect(location);
   });
 });
 
