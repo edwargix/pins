@@ -6,10 +6,24 @@ const fs = require('fs-extra');
 const path = require('path');
 
 
+function validFilename(param, remove_suffix) {
+  return function(req, res, next) {
+    var params = param.split('.');
+    var filename = req[params[0]];
+    for (var i = 1; i < params.length; i++) filename = filename[params[i]];
+
+    if (remove_suffix) filename = filename.substring(0, filename.length - filename.split('.').slice(-1)[0].length - 1);
+    if (filename.search(new RegExp('[^a-zA-Z0-9 _!@$^&*]')) != -1)
+      res.end('The name may only include letters (upper- or lowercase), numbers, spaces, or the following special characters: _ ! @ $ ^ & *');
+    else next();
+  };
+}
+
+
 const supported_images = ['image/jpeg', 'image/gif', 'image/png', 'image/svg+xml', 'image/tiff'];
 
 
-router.post('/upload', upload.single('file'), function(req, res) {
+router.post('/upload', validFilename('body.name', false), upload.single('file'), function(req, res) {
   if (!req.user) {
     res.end('You are not authorized to upload');
     return;
@@ -24,11 +38,6 @@ router.post('/upload', upload.single('file'), function(req, res) {
   }
   if(!found) {
     res.end('That filetype is not supported');
-    return;
-  }
-
-  if (req.body.name.search(new RegExp('[^a-zA-Z0-9 _!@$^&*]')) != -1) {
-    res.end('The name may only include letters (upper- or lowercase), numbers, or the following special characters: _ ! @ $ ^ & *');
     return;
   }
 
@@ -50,14 +59,9 @@ router.post('/upload', upload.single('file'), function(req, res) {
 });
 
 
-router.post('/mkdir', function(req, res) {
+router.post('/mkdir', validFilename('body.name', false), function(req, res) {
   if (!req.user) {
     res.end('You are not authorized to upload');
-    return;
-  }
-
-  if (req.body.name.search(new RegExp('[^a-zA-Z0-9 _!@$^&*]')) != -1) {
-    res.end('The name may only include letters (upper- or lowercase), numbers, spaces, or the following special characters: _ ! @ $ ^ & *');
     return;
   }
 
