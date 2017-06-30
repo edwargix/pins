@@ -35,8 +35,8 @@ function validFilename(param, remove_suffix) {
     for (var i = 1; i < params.length; i++) filename = filename[params[i]];
 
     if (remove_suffix) filename = filename.substring(0, filename.length - filename.split('.').slice(-1)[0].length - 1);
-    if (filename.search(new RegExp('[^a-zA-Z0-9 _!@$^&*]')) != -1)
-      res.end('The name may only include letters (upper- or lowercase), numbers, spaces, or the following special characters: _ ! @ $ ^ & *');
+    if (filename.search(new RegExp('[^a-zA-Z0-9 _!@$^&*.]')) != -1)
+      res.end('The filename may only include letters (upper- or lowercase), numbers, spaces, or the following special characters: . _ ! @ $ ^ & *');
     else next();
   };
 }
