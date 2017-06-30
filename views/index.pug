@@ -24,8 +24,6 @@ block content
     form(action='/upload', method='post', enctype='multipart/form-data', style='display:none')#upload.navbar-form.navbar-left
       .form-group
         input(type='file', name='file')
-      .form-group
-        input(type='text', placeholder='Name', name='name')
       input(type='text', value=path, name='path', style='display:none')
       button(type='submit').btn.btn-success Upload
     br
