@@ -6,7 +6,7 @@
 
 var app = require('../app');
 var debug = require('debug')('pins:server');
-var http = require('http');
+var fs = require('fs-extra');
 
 /**
  * Get port from environment and store in Express.
@@ -16,10 +16,22 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create server: use HTTPS, fallback to HTTP if no certificate files
  */
+var server;
 
-var server = http.createServer(app);
+fs.ensureFileSync('config/cert_files.js');
+var cert_files = require('../config/cert_files');
+
+if (cert_files.key && cert_files.cert) {
+  var options = {
+    key: fs.readFileSync(cert_files.key),
+    cert: fs.readFileSync(cert_files.cert)
+  };
+  server = require('https').createServer(options, app);
+} else
+  server = require('http').createServer(app);
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -50,7 +62,7 @@ function normalizePort(val) {
 }
 
 /**
- * Event listener for HTTP server "error" event.
+ * Event listener for HTTP[S] server "error" event.
  */
 
 function onError(error) {
