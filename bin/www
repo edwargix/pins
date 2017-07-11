@@ -29,6 +29,11 @@ if (cert_files.key && cert_files.cert) {
     cert: fs.readFileSync(cert_files.cert)
   };
   server = require('https').createServer(options, app);
+
+  require('http').createServer(function(req, res) {
+    res.writeHead(301, {"Location": "https://" + req.headers['host'] + req.url});
+    res.end();
+  }).listen(80);
 } else
   server = require('http').createServer(app);
 
